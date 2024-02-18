@@ -1,18 +1,30 @@
-import { Schema, model } from "mongoose";
+import { Schema, model, Types } from "mongoose";
+import User from "./User";
 const TaskSchema = new Schema(
   {
-    username: {
-      type: String,
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
       required: true,
-      unique: true,
+      validate: {
+        validator: async (value: Types.ObjectId) => {
+          const user = await User.findById(value);
+          return Boolean(user);
+        },
+        message: "User does not exist!",
+      },
     },
-    password: {
+    title: {
       type: String,
       required: true,
     },
-    token: {
+    description: {
       type: String,
-      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["new", "in_progres", "completed"],
+      default: "new",
     },
   },
   {

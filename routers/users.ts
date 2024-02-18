@@ -24,7 +24,7 @@ userRouter.post("/", async (req, res, next) => {
   }
 });
 
-userRouter.post("/sessions", auth, async (req: RequestWithUser, res, next) => {
+userRouter.post("/sessions", async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
 
